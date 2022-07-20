@@ -9,13 +9,13 @@ namespace Dataplace.Imersao.Core.Tests.Fixtures
         internal string CdFilial = "01";
         internal OrcamentoCliente Cliente = new OrcamentoCliente("CLI01");
         internal OrcamentoVendedor Vendedor = new OrcamentoVendedor("VDD01");
-        internal string UserName = "sym_usuario";
+        internal OrcamentoUsuario UserName = new OrcamentoUsuario("sym_usuario");
         internal int NumOrcaemtp = 1000;
         internal OrcamentoTabelaPreco TavelaPreco = new OrcamentoTabelaPreco("2022", 1);
 
-
         public Orcamento NovoOrcamento()
         {
+
             return Orcamento.Factory.Orcamento(
                 CdEmpresa, 
                 CdFilial,
@@ -23,6 +23,26 @@ namespace Dataplace.Imersao.Core.Tests.Fixtures
                 Cliente, 
                 UserName,
                 Vendedor, 
+                TavelaPreco);
+        }
+
+        public Orcamento NovoOrcamentoInvalido()
+        {
+            string CdEmpresa = "";
+            string CdFilial = "";
+            OrcamentoCliente Cliente = new OrcamentoCliente("");
+            OrcamentoVendedor Vendedor = new OrcamentoVendedor("");
+            OrcamentoUsuario UserName = new OrcamentoUsuario("");
+            int NumOrcaemtp = 0;
+            OrcamentoTabelaPreco TavelaPreco = new OrcamentoTabelaPreco("", 1);
+
+            return Orcamento.Factory.Orcamento(
+                CdEmpresa,
+                CdFilial,
+                NumOrcaemtp,
+                Cliente,
+                UserName,
+                Vendedor,
                 TavelaPreco);
         }
 

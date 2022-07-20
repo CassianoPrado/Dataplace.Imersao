@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Dataplace.Imersao.Core.Domain.Orcamentos.Enums
 {
-    public enum OrcamentoStatusEnum
+    public enum OrcamentoItemStatusEnum
     {
         Aberto,
         Fechado,
@@ -14,37 +14,37 @@ namespace Dataplace.Imersao.Core.Domain.Orcamentos.Enums
         NaoDefinido
     }
 
-    public static class OrcamentoStatusEnumExtensions
+    public static class OrcamentoItemStatusEnumExtensions
     {
-        public static string ToDataValue(this OrcamentoStatusEnum value)
+        public static string ToDataValue(this OrcamentoItemStatusEnum value)
         {            
             switch (value)
             {
-                case OrcamentoStatusEnum.Aberto:
+                case OrcamentoItemStatusEnum.Aberto:
                     return "P";
-                case OrcamentoStatusEnum.Fechado:
+                case OrcamentoItemStatusEnum.Fechado:
                     return "F";
-                case OrcamentoStatusEnum.Cancelado:
+                case OrcamentoItemStatusEnum.Cancelado:
                     return "C";
                 default:
                     return null;
             }
         }
-        public static OrcamentoStatusEnum ToOrcamentoStatusEnum(this string value)
+        public static OrcamentoItemStatusEnum ToOrcamentoItemStatusEnum(this string value)
         {
             if (string.IsNullOrEmpty(value))
-                return OrcamentoStatusEnum.Aberto;
+                return OrcamentoItemStatusEnum.Aberto;
 
             switch (value)
             {
                 case "F":
-                    return OrcamentoStatusEnum.Fechado;
+                    return OrcamentoItemStatusEnum.Fechado;
                 case "C":
-                    return OrcamentoStatusEnum.Cancelado;
+                    return OrcamentoItemStatusEnum.Cancelado;
                 case "P":
-                    return OrcamentoStatusEnum.Aberto;
+                    return OrcamentoItemStatusEnum.Aberto;
                 default:
-                    return OrcamentoStatusEnum.NaoDefinido;
+                    return OrcamentoItemStatusEnum.NaoDefinido;
             }
         }
     }

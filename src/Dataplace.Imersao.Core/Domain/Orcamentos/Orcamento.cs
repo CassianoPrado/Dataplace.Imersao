@@ -9,7 +9,7 @@ namespace Dataplace.Imersao.Core.Domain.Orcamentos
     public class Orcamento
     {
         private Orcamento(string cdEmpresa, string cdFilial, int numOrcamento, OrcamentoCliente cliente, 
-            string usuario, OrcamentoVendedor vendedor, OrcamentoTabelaPreco tabelaPreco)
+            OrcamentoUsuario usuario, OrcamentoVendedor vendedor, OrcamentoTabelaPreco tabelaPreco)
         {
 
             CdEmpresa = cdEmpresa;
@@ -38,7 +38,7 @@ namespace Dataplace.Imersao.Core.Domain.Orcamentos
         public OrcamentoTabelaPreco TabelaPreco { get; private set; }
         public DateTime? DtFechamento { get; private set; }
         public OrcamentoVendedor Vendedor { get; private set; }
-        public string Usuario { get; private set; }
+        public OrcamentoUsuario Usuario { get; private set; }
         public OrcamentoStatusEnum Situacao { get; private set; }
         public ICollection<OrcamentoItem> Itens { get; private set; }
 
@@ -52,6 +52,17 @@ namespace Dataplace.Imersao.Core.Domain.Orcamentos
             DtFechamento = DateTime.Now.Date;
         }
 
+        public void CancelarOrcamento()
+        {
+            if (Situacao == OrcamentoStatusEnum.Cancelado)
+                throw new DomainException("Orçamento já está cancelado!");
+
+            if (Situacao == OrcamentoStatusEnum.Fechado)
+                throw new DomainException("Orçamento já está fechado!");
+
+            Situacao = OrcamentoStatusEnum.Cancelado;
+        }
+
         public void ReabrirOrcamento()
         {
             if (Situacao == OrcamentoStatusEnum.Aberto)
@@ -59,6 +70,14 @@ namespace Dataplace.Imersao.Core.Domain.Orcamentos
 
             Situacao = OrcamentoStatusEnum.Aberto;
             DtFechamento = null;
+        }
+
+        public void InsereItem(OrcamentoItem item)
+        {
+            if (!item.IsValid())
+                throw new DomainException($"Foram encontradas inconsistências nos dados dos itens do orçamento, o mesmo não será inserido. " +
+                    $"Mensagem: {string.Join(",", item.Validations.ToArray())}");
+            Itens.Add(item);
         }
 
         public void DefinirValidade(int diasValidade)
@@ -79,6 +98,15 @@ namespace Dataplace.Imersao.Core.Domain.Orcamentos
             if (string.IsNullOrEmpty(CdFilial))
                 Validations.Add("Código da filial é requirido!");
 
+            if (NumOrcamento <= 0)
+                Validations.Add("O número do orçamento informado deve ser maior que zero!");
+
+            if (Cliente.Codigo == "")
+                Validations.Add("O cliente deve ser informado!");
+
+            if (DtOrcamento < DateTime.Now.AddDays(-7))
+                Validations.Add($"A data do orçamento informada não pode ser menor que {DateTime.Now.AddDays(-7)}");
+
             if (Validations.Count > 0)
                 return false;
             else
@@ -91,11 +119,11 @@ namespace Dataplace.Imersao.Core.Domain.Orcamentos
         public static class Factory
         {
 
-            public static Orcamento Orcamento(string cdEmpresa, string cdFilial, int numOrcamento, OrcamentoCliente cliente , string usuario, OrcamentoVendedor vendedor, OrcamentoTabelaPreco tabelaPreco)
+            public static Orcamento Orcamento(string cdEmpresa, string cdFilial, int numOrcamento, OrcamentoCliente cliente , OrcamentoUsuario usuario, OrcamentoVendedor vendedor, OrcamentoTabelaPreco tabelaPreco)
             {
                 return new Orcamento(cdEmpresa, cdFilial, numOrcamento, cliente, usuario, vendedor, tabelaPreco);
             }
-            public static Orcamento OrcamentoRapido(string cdEmpresa, string cdFilial, int numOrcamento, string usuario, OrcamentoVendedor vendedor, OrcamentoTabelaPreco tabelaPreco)
+            public static Orcamento OrcamentoRapido(string cdEmpresa, string cdFilial, int numOrcamento, OrcamentoUsuario usuario, OrcamentoVendedor vendedor, OrcamentoTabelaPreco tabelaPreco)
             {
                 return new Orcamento(cdEmpresa, cdFilial, numOrcamento, null, usuario, vendedor, tabelaPreco);
             }

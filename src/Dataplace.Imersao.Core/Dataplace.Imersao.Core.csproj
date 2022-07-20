@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Domain\Excepions\DomainException.cs" />
+    <Compile Include="Domain\Orcamentos\Enums\OrcamentoItemStatusEnum.cs" />
     <Compile Include="Domain\Orcamentos\Enums\OrcamentoStatusEnum.cs" />
     <Compile Include="Domain\Orcamentos\Enums\TpRegistroEnum.cs" />
     <Compile Include="Domain\Orcamentos\Orcamento.cs" />
@@ -50,6 +51,7 @@
     <Compile Include="Domain\Orcamentos\ValueObjects\OrcamentoItemPreco.cs" />
     <Compile Include="Domain\Orcamentos\ValueObjects\OrcamentoProduto.cs" />
     <Compile Include="Domain\Orcamentos\ValueObjects\OrcamentoTabelaPreco.cs" />
+    <Compile Include="Domain\Orcamentos\ValueObjects\OrcamentoUsuario.cs" />
     <Compile Include="Domain\Orcamentos\ValueObjects\OrcamentoValidade.cs" />
     <Compile Include="Domain\Orcamentos\ValueObjects\OrcamentoVendedor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
